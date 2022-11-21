@@ -1,13 +1,13 @@
-const { ERROR_MESSAGE } = require("../constant/Constant");
+const { ERROR_MESSAGE } = require("../constants/constants");
 
 class BridgeSize {
   constructor(BridgeSize) {
     this.validate(BridgeSize);
-    this.checkIsValidRange(BridgeSize);
   }
 
   validate(BridgeSize) {
     this.checkIsNumber(BridgeSize);
+    this.checkIsValidRange(BridgeSize);
   }
 
   checkIsNumber(BridgeSize) {
