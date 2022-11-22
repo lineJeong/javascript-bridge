@@ -2,6 +2,7 @@ const ERROR_MESSAGE = Object.freeze({
   NOT_A_NUMBER: "[ERROR] 다리 길이는 숫자여야 합니다.",
   NOT_VALID_RANGE: "[ERROR] 다리 길이는 3부터 20 사이의 숫자여야 합니다.",
   NOT_U_OR_D: "[ERROR] 이동할 칸은 U 또는 D 중 하나여야 합니다.",
+  NOT_R_OR_Q: "[ERROR] 재시도는 R, 종료는 Q로 둘 중 하나여야 합니다.",
 });
 
 const GUIDE_MESSAGE = Object.freeze({
