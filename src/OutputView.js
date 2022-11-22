@@ -14,26 +14,11 @@ const OutputView = {
 
   //  BRIDGE_GAME: new BridgeGame(),
   printMap(moving, answer, upperBridge, lowerBridge) {
-    const MAP = {
-      upper: "",
-      lower: "",
-    };
-
     const BRIDGE_GAME = new BridgeGame();
     BRIDGE_GAME.move(moving, answer, upperBridge, lowerBridge);
 
-    for (let i = 0; i < upperBridge.length; i++) {
-      MAP.upper += upperBridge[i];
-      MAP.lower += lowerBridge[i];
-
-      if (upperBridge.length > 1 && i !== upperBridge.length - 1) {
-        MAP.upper += " | ";
-        MAP.lower += " | ";
-      }
-    }
-
-    Console.print(`[ ${MAP.upper} ]`);
-    Console.print(`[ ${MAP.lower} ]`);
+    Console.print(`[ ${upperBridge.join(" | ")} ]`);
+    Console.print(`[ ${lowerBridge.join(" | ")} ]`);
   },
 
   /**
