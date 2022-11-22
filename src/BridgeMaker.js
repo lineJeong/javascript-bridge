@@ -20,6 +20,7 @@ const BridgeMaker = {
       }
       BridgeMaker.BRIDGE.push(answer);
     }
+    console.log(BridgeMaker.BRIDGE);
     return BridgeMaker.BRIDGE;
   },
 };

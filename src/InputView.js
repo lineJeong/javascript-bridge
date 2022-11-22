@@ -3,6 +3,7 @@ const { GUIDE_MESSAGE } = require("./constants/constants");
 
 const BridgeMaker = require("./BridgeMaker");
 const BridgeRandomNumberGenerator = require("./BridgeRandomNumberGenerator");
+const OutputView = require("./OutputView");
 
 const BridgeSize = require("./validate/BridgeSize");
 const Moving = require("./validate/Moving");
@@ -14,6 +15,10 @@ const InputView = {
   /**
    * 다리의 길이를 입력받는다.
    */
+  UPPER_BRIDGE: [],
+  LOWER_BRIDGE: [],
+  INDEX: 0,
+
   readBridgeSize() {
     Console.readLine(`\n${GUIDE_MESSAGE.BRIDGE_SIZE}\n`, (bridgeSize) => {
       bridgeSize = Number(bridgeSize);
@@ -29,13 +34,32 @@ const InputView = {
   readMoving() {
     Console.readLine(`\n${GUIDE_MESSAGE.MOVE}\n`, (moving) => {
       new Moving(moving);
+      const ANSWER = BridgeMaker.BRIDGE[InputView.INDEX++];
+
+      OutputView.printMap(
+        moving,
+        ANSWER,
+        InputView.UPPER_BRIDGE,
+        InputView.LOWER_BRIDGE
+      );
+
+      if (moving !== ANSWER) {
+        this.readGameCommand();
+        return;
+      }
+      this.readMoving();
     });
   },
 
   /**
    * 사용자가 게임을 다시 시도할지 종료할지 여부를 입력받는다.
    */
-  readGameCommand() {},
+  readGameCommand() {
+    Console.readLine(
+      `\n${GUIDE_MESSAGE.RESTART_OR_QUIT}\n`,
+      (gameCommand) => {}
+    );
+  },
 };
 
 module.exports = InputView;
