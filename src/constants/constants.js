@@ -12,8 +12,8 @@ const GUIDE_MESSAGE = Object.freeze({
   RESTART_OR_QUIT:
     "게임을 다시 시도할지 여부를 입력해주세요. (재시도: R, 종료: Q)",
   RESULT: "최종 게임 결과",
-  SUCCESS_OR_NOT: "게임 성공 여부:",
-  ATTEMPT_TIMES: "총 시도한 횟수:",
+  SUCCESS_OR_NOT: "게임 성공 여부: ",
+  ATTEMPT_TIMES: "총 시도한 횟수: ",
 });
 
 module.exports = { ERROR_MESSAGE, GUIDE_MESSAGE };

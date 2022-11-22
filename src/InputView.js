@@ -1,8 +1,10 @@
 const { Console } = require("@woowacourse/mission-utils");
 const { GUIDE_MESSAGE } = require("./constants/constants");
 
-const BridgeMaker = require("./BridgeMaker");
 const BridgeRandomNumberGenerator = require("./BridgeRandomNumberGenerator");
+const BridgeMaker = require("./BridgeMaker");
+const BridgeGame = require("./BridgeGame");
+const bridgeGame = new BridgeGame();
 const OutputView = require("./OutputView");
 
 const BridgeSize = require("./validate/BridgeSize");
@@ -19,12 +21,15 @@ const InputView = {
   UPPER_BRIDGE: [],
   LOWER_BRIDGE: [],
   INDEX: 0,
+  ATTEMPT_TIMES: 1,
 
   readBridgeSize() {
     Console.readLine(`\n${GUIDE_MESSAGE.BRIDGE_SIZE}\n`, (bridgeSize) => {
       bridgeSize = Number(bridgeSize);
       new BridgeSize(bridgeSize); // 예외 처리
+
       BridgeMaker.makeBridge(bridgeSize, BridgeRandomNumberGenerator.generate);
+      Console.print("\n");
       this.readMoving();
     });
   },
@@ -33,8 +38,9 @@ const InputView = {
    * 사용자가 이동할 칸을 입력받는다.
    */
   readMoving() {
-    Console.readLine(`\n${GUIDE_MESSAGE.MOVE}\n`, (moving) => {
+    Console.readLine(`${GUIDE_MESSAGE.MOVE}\n`, (moving) => {
       new Moving(moving); // 예외 처리
+
       const ANSWER = BridgeMaker.BRIDGE[InputView.INDEX++];
 
       OutputView.printMap(
@@ -43,22 +49,48 @@ const InputView = {
         InputView.UPPER_BRIDGE,
         InputView.LOWER_BRIDGE
       );
-
-      if (moving !== ANSWER) {
-        this.readGameCommand();
-        return;
-      }
-      this.readMoving();
+      this.setCondition(moving, ANSWER);
     });
+  },
+
+  setCondition(moving, answer) {
+    if (moving !== answer) {
+      this.readGameCommand();
+      return;
+    }
+    if (InputView.INDEX === BridgeMaker.BRIDGE.length) {
+      OutputView.printResult("성공", InputView.ATTEMPT_TIMES);
+      return;
+    }
+
+    this.readMoving();
   },
 
   /**
    * 사용자가 게임을 다시 시도할지 종료할지 여부를 입력받는다.
    */
   readGameCommand() {
-    Console.readLine(`\n${GUIDE_MESSAGE.RESTART_OR_QUIT}\n`, (gameCommand) => {
+    Console.readLine(`${GUIDE_MESSAGE.RESTART_OR_QUIT}\n`, (gameCommand) => {
       new GameCommand(gameCommand); // 예외 처리
+
+      this.divideGameCommand(gameCommand);
     });
+  },
+
+  divideGameCommand(gameCommand) {
+    if (gameCommand === "R") {
+      InputView.ATTEMPT_TIMES = bridgeGame.retry(InputView.ATTEMPT_TIMES);
+      this.initializeProperty();
+      this.readMoving();
+    } else if (gameCommand === "Q") {
+      OutputView.printResult("실패", InputView.ATTEMPT_TIMES);
+    }
+  },
+
+  initializeProperty() {
+    InputView.UPPER_BRIDGE = [];
+    InputView.LOWER_BRIDGE = [];
+    InputView.INDEX = 0;
   },
 };
 

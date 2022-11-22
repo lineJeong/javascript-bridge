@@ -1,4 +1,5 @@
 const { Console } = require("@woowacourse/mission-utils");
+const { GUIDE_MESSAGE } = require("./constants/constants");
 
 const BridgeGame = require("./BridgeGame");
 
@@ -11,14 +12,20 @@ const OutputView = {
    * <p>
    * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
    */
-
-  //  BRIDGE_GAME: new BridgeGame(),
+  RESULT: {
+    UPPER: "",
+    LOWER: "",
+  },
   printMap(moving, answer, upperBridge, lowerBridge) {
     const BRIDGE_GAME = new BridgeGame();
     BRIDGE_GAME.move(moving, answer, upperBridge, lowerBridge);
 
-    Console.print(`[ ${upperBridge.join(" | ")} ]`);
-    Console.print(`[ ${lowerBridge.join(" | ")} ]`);
+    OutputView.RESULT.UPPER = `[ ${upperBridge.join(" | ")} ]`;
+    OutputView.RESULT.LOWER = `[ ${lowerBridge.join(" | ")} ]`;
+
+    Console.print(OutputView.RESULT.UPPER);
+    Console.print(OutputView.RESULT.LOWER);
+    Console.print("\n");
   },
 
   /**
@@ -26,7 +33,15 @@ const OutputView = {
    * <p>
    * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
    */
-  printResult() {},
+  printResult(successOrNot, attemtpTimes) {
+    Console.print(GUIDE_MESSAGE.RESULT);
+    Console.print(OutputView.RESULT.UPPER);
+    Console.print(OutputView.RESULT.LOWER);
+    Console.print("\n");
+    Console.print(GUIDE_MESSAGE.SUCCESS_OR_NOT + successOrNot);
+    Console.print(GUIDE_MESSAGE.ATTEMPT_TIMES + attemtpTimes);
+    Console.close();
+  },
 };
 
 module.exports = OutputView;
